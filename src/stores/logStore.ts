@@ -1,26 +1,36 @@
-// @/stores/logStore
-// （logs配列のlocalStrage保存）logs: Log[ ]・addLog(log: Log)・deleteLog(id)・editLog(id)
+// @/stores/logPersistStore
+// refered to https://zustand.docs.pmnd.rs/integrations/persisting-store-data　
 
 import { create } from "zustand";
-import { Log } from "@/types/log";
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { StoredLog } from "@/types/log";
+
 
 type LogStore = {
-  logs: Log[];
-  addLog: (log: Log) => void;
+  storedLogs: StoredLog[]; // data from localStrage to be merged automatically
+  addLog: (log: StoredLog) => void;
   deleteLog: (id: string) => void;
 }
 
-export const useLogStore = create<LogStore>((set) => ({
-  logs: [],
+export const useLogStore = create<LogStore>()(
+  persist( // call localStorage.getItem / setItem ("logs") automatically
+    (set) => ({
+      storedLogs: [],
 
-  addLog: (log) =>
-    set((state) => ({
-      logs: [log, ...state.logs], // ← latestリストを出すため先頭に入れる
-    })),
+      addLog: (log) =>
+        set((state) => ({
+          storedLogs: [log, ...state.storedLogs],
+        })),
 
-  deleteLog: (id) =>
-    set((state) => ({
-      logs: state.logs.filter((log) => log.id !== id),
-    })),
+      deleteLog: (id) =>
+        set((state) => ({
+          storedLogs: state.storedLogs.filter((log) => log.id !== id),
+        })),
+    }),
+    {
+      name: "logs",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+)
 
-}))

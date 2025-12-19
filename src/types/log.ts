@@ -1,6 +1,19 @@
 // @/types/log.ts
 
 
+// for strage
+export type StoredLog = {
+  id: string;
+  date: string;
+  start: string;
+  goal: string;
+  breakMin: number;
+  mountain: string;
+  entry: string;
+  exit: string;
+  weather: Weather;
+};
+
 // for UI/form (all string for input elements)
 export type FormLog = {
   date: string;
@@ -30,17 +43,4 @@ export type Weather = {
   main: string;
   description: string;
   icon: string;
-};
-
-// for strage
-export type StoredLog = {
-  id: string;
-  date: string;
-  start: string;
-  goal: string;
-  breakMin: number;
-  mountain: string;
-  entry: string;
-  exit: string;
-  weather: Weather;
 };

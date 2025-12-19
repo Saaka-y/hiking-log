@@ -5,12 +5,12 @@ import { filterLogs } from "@/utils/filterLogs"
 
 
 export function Header() {
-  const { logs } = useLogStore();
+  const { storedLogs } = useLogStore();
   const [mountainName, setMountainName] = useState("")
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMountainName(e.target.value)
-    filterLogs(logs, mountainName)
+    filterLogs(storedLogs, mountainName)
   }
 
   return (
