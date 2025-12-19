@@ -1,9 +1,20 @@
+//@/components/mainView/CreateBtn.tsx
 
+export function CreateBtn({ setIsModalOpen }) {
 
-export function CreateBtn() {
-  return(
-    <div>
+  const openModal = () => {
+
+  }
+
+  return (
+    <>
       {/* Show form modal */}
-    </div>
+      <button
+        onClick={openModal}
+        className="py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
+      >
+        Create new log
+      </button>
+    </>
   )
 }
