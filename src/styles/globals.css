@@ -2,20 +2,17 @@
 
 :root {
   --background: #ffffff;
-  --color: rgba(0, 0, 0, 0.719);
-  --foreground: #e0dfdf;
+  --foreground: #bfd0dd;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #163c43;
-    --color: rgb(255, 255, 255);
-    --foreground: #1c5661;
+    --foreground: #21626f;
   }
-}
+} */
 
 body {
   background: var(--background);
-  color: var(--color);
   font-family: Arial, Helvetica, sans-serif;
 }
