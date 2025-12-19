@@ -1,6 +1,8 @@
+// @/types/log.ts
 
-// for UI (all string for input elements)
-export type UiLog = {
+
+// for UI/form (all string for input elements)
+export type FormLog = {
   date: string;
   start: string;
   goal: string;
