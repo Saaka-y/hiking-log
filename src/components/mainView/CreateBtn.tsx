@@ -1,9 +1,14 @@
 //@/components/mainView/CreateBtn.tsx
+import { Dispatch, SetStateAction } from "react";
 
-export function CreateBtn({ setIsModalOpen }) {
+type Props = {
+  setFormIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export function CreateBtn({ setFormIsOpen }: Props) {
 
   const openModal = () => {
-
+    setFormIsOpen(true);
   }
 
   return (

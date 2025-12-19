@@ -15,7 +15,7 @@ export default function Home() {
       <div className='w-[90%] max-w-187 h-[60%] flex flex-col justify-around items-center gap-5'>
         <Header />
         <List setLogIsOpen={setLogIsOpen} />
-        <CreateBtn setIsOpen={setFormIsOpen}/>
+        <CreateBtn setFormIsOpen={setFormIsOpen}/>
       </div>
 
       <Modal isOpen={formIsOpen}>

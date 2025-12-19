@@ -1,8 +1,12 @@
+//@/components/mainView/Item.tsx
+import { Dispatch, SetStateAction } from "react";
 
-import { useLogStore } from "@/stores/logStore";
+type Props = {
+  setLogIsOpen: Dispatch<SetStateAction<boolean>>;
+};
 
-export function Item({ setLogIsOpen }) {
-  const { logs } = useLogStore();
+export function Item({ setLogIsOpen }: Props) {
+
 
   const openLog = () => {
     setLogIsOpen(true);
