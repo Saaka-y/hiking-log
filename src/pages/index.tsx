@@ -31,7 +31,7 @@ export default function Home() {
         className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
 
       >
-        <Form />
+        <Form onCancel={() => setFormIsOpen(false)}/>
       </Modal>
 
       <Modal isOpen={logIsOpen}>

@@ -4,7 +4,11 @@ import { useLogStore } from "@/stores/logStore";
 import { FormLog } from "@/types/log";
 import { formLogToLog, logToStoredLog } from "@/utils/logConverter";
 
-export function Form() {
+type Props = {
+  onCancel: () => void;
+}
+
+export function Form({ onCancel }: Props) {
   const { addLog } = useLogStore();
 
   const [formData, setFormData] = useState<FormLog>({
@@ -45,8 +49,20 @@ export function Form() {
     if (!formData) return;
     // ここでweather APIを呼ぶ関数を入れる
     const l = formLogToLog(formData); // Convert formData to DomainLog
+    console.log("formからLogに変換：", l)
     const newLog = logToStoredLog(l); // Convert DomainLog to StoredLog
+    console.log("Logからstorage用に変換：", l)
     addLog(newLog);
+
+    setFormData({
+      date: "",
+      mountain: "",
+      start: "",
+      goal: "",
+      breakMin: "",
+      entry: "",
+      exit: "",
+    })
   }
 
 
@@ -61,7 +77,7 @@ export function Form() {
           <div
             key={item.label}
             className="flex flex-col items-start gap-2">
-            <label htmlFor={item.label} className="text-xs text-black">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase()+ item.label.slice(1)}</label>
+            <label htmlFor={item.label} className="text-xs text-black">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}</label>
             <input
               id={item.label}
               type={item.inputType}
@@ -73,7 +89,30 @@ export function Form() {
         )
       })}
       <div className="flex gap-10 pt-4">
-        <button id="form" className="py-2 px-4 border-none rounded-xl bg-amber-500 text-white">Cancel</button>
+        <button
+          id="form"
+          type="button"
+          onClick={() => {
+            const ok = window.confirm("Are you sure to cancel?");
+            if (!ok) return;
+
+            // フォームをリセット（任意）
+            setFormData({
+              date: "",
+              mountain: "",
+              start: "",
+              goal: "",
+              breakMin: "",
+              entry: "",
+              exit: "",
+            });
+
+            onCancel(); // ← Modal close
+          }}
+          className="py-2 px-4 border-none rounded-xl bg-amber-500 text-white"
+        >
+          Cancel
+        </button>
         <button
           id="form"
           type="submit"
@@ -82,6 +121,6 @@ export function Form() {
           Add
         </button>
       </div>
-    </form>
+    </form >
   )
 }

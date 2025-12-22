@@ -19,11 +19,16 @@ export const storedLogToLog = (storedLog: StoredLog): Log => {
 
 // Convert form input to domain log data
 export const formLogToLog = (formLog: FormLog): Log => {
+
+  // To avoid "invalid date" error
+  const start = new Date(`${formLog.date}T${formLog.start}`);
+  const goal  = new Date(`${formLog.date}T${formLog.goal}`);
+
   return {
     id: crypto.randomUUID(),
     date: new Date(formLog.date),
-    start: new Date(formLog.start),
-    goal: new Date(formLog.goal),
+    start,
+    goal,
     breakMin: Number(formLog.breakMin),
     mountain: formLog.mountain,
     entry: formLog.entry,
