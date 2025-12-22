@@ -13,7 +13,8 @@ export function Header({ keyword, setKeyword }: Props) {
     <input
       type="text"
       value={keyword}
-      className="bg-(--foreground) w-[80%] h-20"
+      className="bg-(--foreground) w-[80%] h-20 pl-6 rounded-full"
+      placeholder="Put a mountain name"
       onChange={(e) => setKeyword(e.target.value)}
     />
   )

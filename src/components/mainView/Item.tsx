@@ -1,24 +1,20 @@
 //@/components/mainView/Item.tsx
-import { Dispatch, SetStateAction } from "react";
 import { Log } from "@/types/log";
 
 type Props = {
-  key: string;
   log: Log;
-  setLogIsOpen: Dispatch<SetStateAction<boolean>>;
+  onOpen: () => void;
 };
 
-export function Item({ setLogIsOpen }: Props) {
+export function Item({log, onOpen }: Props) {
 
-
-  const openLog = () => {
-    setLogIsOpen(true);
-
-  }
 
   return (
-    <li onClick={openLog}>
+    <li onClick={onOpen} className="bg-(--background) w-[90%] h-full px-6 py-3 text-xs">
       {/* UI for each log */}
+      {log.date.toISOString().slice(0,10)}
+      <br/>
+      {log.mountain.charAt(0).toUpperCase() + log.mountain.slice(1)}
     </li>
   )
 }

@@ -1,24 +1,22 @@
 //@/components/mainView/List.tsx
-
-import { Dispatch, SetStateAction } from 'react';
 import { Log } from '@/types/log';
 import { Item } from "@/components/mainView/Item"
 
 
 type Props = {
-  setLogIsOpen: Dispatch<SetStateAction<boolean>>;
+  onOpen: () => void;
   filteredLogs: Log[];
 };
 
-export function List({ setLogIsOpen, filteredLogs }: Props) {
+export function List({ onOpen, filteredLogs }: Props) {
 
   return (
-    <ul className="bg-(--foreground) w-[80%] h-full my-3">
+    <ul className="flex flex-col justify-center items-center gap-4 bg-(--foreground) w-[80%] h-full py-8 overflow-y-auto">
       {filteredLogs.map(log => (
         <Item 
           key={log.id}
           log={log}  
-          setLogIsOpen={setLogIsOpen}
+          onOpen={onOpen}
         />
       ))}
     </ul>
