@@ -1,4 +1,4 @@
-// @/stores/logPersistStore
+// @/stores/logStore
 // refered to https://zustand.docs.pmnd.rs/integrations/persisting-store-data　
 
 import { create } from "zustand";

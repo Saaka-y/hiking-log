@@ -1,15 +1,20 @@
 //@/components/formModal/Form.tsx
 import { useState } from "react";
+import { useLogStore } from "@/stores/logStore";
+import { FormLog } from "@/types/log";
+import { formLogToLog, logToStoredLog } from "@/utils/logConverter";
 
 export function Form() {
-  const [formData, setFormData] = useState({
-    Date: "",
-    Mountain: "",
-    Start: "",
-    Goal: "",
-    Break: "",
-    Entry: "",
-    Exit: "",
+  const { addLog } = useLogStore();
+
+  const [formData, setFormData] = useState<FormLog>({
+    date: "",
+    mountain: "",
+    start: "",
+    goal: "",
+    breakMin: "",
+    entry: "",
+    exit: "",
   })
 
   // formData のキー名（"Date" | "Mountain" | ...）だけを label として使う型
@@ -18,28 +23,32 @@ export function Form() {
   type items = { label: keyof typeof formData, inputType: string }
 
   const itemArray: items[] = [
-    { label: "Date", inputType: "date" },
-    { label: "Mountain", inputType: "text" },
-    { label: "Start", inputType: "time" },
-    { label: "Goal", inputType: "time" },
-    { label: "Break", inputType: "number" },
-    { label: "Entry", inputType: "text" },
-    { label: "Exit", inputType: "text" },
+    { label: "date", inputType: "date" },
+    { label: "mountain", inputType: "text" },
+    { label: "start", inputType: "time" },
+    { label: "goal", inputType: "time" },
+    { label: "breakMin", inputType: "number" },
+    { label: "entry", inputType: "text" },
+    { label: "exit", inputType: "text" },
   ]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {id, value} = e.target;
+    const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [id]: value,
     }))
   }
 
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 処理
+    if (!formData) return;
+    // ここでweather APIを呼ぶ関数を入れる
+    const l = formLogToLog(formData); // Convert formData to DomainLog
+    const newLog = logToStoredLog(l); // Convert DomainLog to StoredLog
+    addLog(newLog);
   }
+
 
   return (
     <form
@@ -52,10 +61,10 @@ export function Form() {
           <div
             key={item.label}
             className="flex flex-col items-start gap-2">
-            <label htmlFor={item.label} className="text-xs text-black">{item.label}</label>
-            <input 
-              id={item.label} 
-              type={item.inputType} 
+            <label htmlFor={item.label} className="text-xs text-black">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase()+ item.label.slice(1)}</label>
+            <input
+              id={item.label}
+              type={item.inputType}
               value={formData[item.label]}
               onChange={handleChange}
               className="bg-blue-50 max-w-50 min-w-50  p-2 text-xs rounded-xl"
@@ -65,7 +74,13 @@ export function Form() {
       })}
       <div className="flex gap-10 pt-4">
         <button id="form" className="py-2 px-4 border-none rounded-xl bg-amber-500 text-white">Cancel</button>
-        <button id="form" className="py-2 px-4 border-none rounded-xl bg-lime-700 text-white">Add</button>
+        <button
+          id="form"
+          type="submit"
+          className="py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
+        >
+          Add
+        </button>
       </div>
     </form>
   )
