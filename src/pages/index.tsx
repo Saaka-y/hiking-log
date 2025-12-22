@@ -5,16 +5,22 @@ import { List } from '@/components/mainView/List';
 import { CreateBtn } from '@/components/mainView/CreateBtn';
 import { Form } from '@/components/formModal/Form'
 import { LogModal } from '@/components/logModal/LogModal';
+import { filterLogs } from "@/utils/filterLogs"
+import { useLogStore } from '@/stores/logStore';
 
 export default function Home() {
   const [formIsOpen, setFormIsOpen] = useState(false)
   const [logIsOpen, setLogIsOpen] = useState(false)
+  const [keyword, setKeyword] = useState("");
+
+  const { storedLogs } = useLogStore();
+  const filteredLogs = filterLogs(storedLogs, keyword)
 
   return (
     <div className='w-screen h-screen flex flex-col justify-center items-center'>
       <div className='w-[90%] max-w-187 h-[60%] flex flex-col justify-around items-center gap-5'>
-        <Header />
-        <List setLogIsOpen={setLogIsOpen} />
+        <Header keyword={keyword} setKeyword={setKeyword}/>
+        <List setLogIsOpen={setLogIsOpen} filteredLogs={filteredLogs}  />
         <CreateBtn setFormIsOpen={setFormIsOpen}/>
       </div>
 

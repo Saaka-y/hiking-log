@@ -1,27 +1,20 @@
 //@/components/mainView/Header.tsx
-import { useState } from "react"
-import { useLogStore } from "@/stores/logStore"
-import { filterLogs } from "@/utils/filterLogs"
 
+import { Dispatch, SetStateAction } from "react"
 
-export function Header() {
-  const { storedLogs } = useLogStore();
-  const [mountainName, setMountainName] = useState("")
+type Props = {
+  keyword: string;
+  setKeyword: Dispatch<SetStateAction<string>>;
+};
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMountainName(e.target.value)
-    filterLogs(storedLogs, mountainName)
-  }
+export function Header({ keyword, setKeyword }: Props) {
 
   return (
-    <>
-      {/* search window */}
-      <input
-        type="text"
-        value={mountainName}
-        className="bg-(--foreground) w-[80%] h-20"
-        onChange={handleSearch}
-      />
-    </>
+    <input
+      type="text"
+      value={keyword}
+      className="bg-(--foreground) w-[80%] h-20"
+      onChange={(e) => setKeyword(e.target.value)}
+    />
   )
 }
