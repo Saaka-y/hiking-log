@@ -63,6 +63,8 @@ export function Form({ onCancel }: Props) {
       entry: "",
       exit: "",
     })
+
+    onCancel();
   }
 
 
