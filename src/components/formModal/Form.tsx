@@ -14,6 +14,7 @@ export function Form({ onCancel }: Props) {
   const [formData, setFormData] = useState<FormLog>({
     date: "",
     mountain: "",
+    weather: "",
     start: "",
     goal: "",
     breakMin: "",
@@ -25,6 +26,7 @@ export function Form({ onCancel }: Props) {
     setFormData({
       date: "",
       mountain: "",
+      weather: "",
       start: "",
       goal: "",
       breakMin: "",
@@ -33,22 +35,32 @@ export function Form({ onCancel }: Props) {
     })
   }
 
-  // formData のキー名（"Date" | "Mountain" | ...）だけを label として使う型
+  // formData のキー名（"Date" | "Mountain" | ...）を label として使う型
   // 文字列、などではなく直接キー名を型として定義している
   // これにより、 item.label を使って formData に安全にアクセスできるからエラーが出ない
-  type items = { label: keyof typeof formData, inputType: string }
+  type FormItem =
+    | { label: keyof FormLog; type: "input"; inputType: string }
+    | { label: keyof FormLog; type: "select"; options: string[] };
 
-  const itemsForUi: items[] = [
-    { label: "date", inputType: "date" },
-    { label: "mountain", inputType: "text" },
-    { label: "start", inputType: "time" },
-    { label: "goal", inputType: "time" },
-    { label: "breakMin", inputType: "number" },
-    { label: "entry", inputType: "text" },
-    { label: "exit", inputType: "text" },
-  ]
+  const itemsForUi: FormItem[] = [
+    { label: "date", type: "input", inputType: "date" },
+    { label: "mountain", type: "input", inputType: "text" },
+    {
+      label: "weather", type: "select", options: [
+        "Clear sky",
+        "Cloudy",
+        "Partially rainy",
+        "Rainy",
+      ]
+    },
+    { label: "start", type: "input", inputType: "time" },
+    { label: "goal", type: "input", inputType: "time" },
+    { label: "breakMin", type: "input", inputType: "number" },
+    { label: "entry", type: "input", inputType: "text" },
+    { label: "exit", type: "input", inputType: "text" },
+  ];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -59,7 +71,7 @@ export function Form({ onCancel }: Props) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData) return;
-    // ここでweather APIを呼ぶ関数を入れる
+
     const l = formLogToLog(formData); // Convert formData to DomainLog
     console.log("formからLogに変換：", l)
     const newLog = logToStoredLog(l); // Convert DomainLog to StoredLog
@@ -89,18 +101,37 @@ export function Form({ onCancel }: Props) {
         return (
           <div
             key={item.label}
-            className="flex flex-col items-start gap-2">
-            <label htmlFor={item.label} className="text-xs text-(--color)">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}</label>
-            <input
-              id={item.label}
-              type={item.inputType}
-              value={formData[item.label]}
-              onChange={handleChange}
-              className="bg-(--inputColor) max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
-            />
+            className="flex flex-col items-start gap-2"
+          >
+            <label htmlFor={item.label} className="text-xs text-(--color)">
+              {item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}
+            </label>
+
+            {item.type === "input" ? (
+              <input
+                id={item.label}
+                type={item.inputType}
+                value={formData[item.label]}
+                onChange={handleChange}
+                className="bg-(--inputColor) max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
+              />
+            ) : (
+              <select
+                id={item.label}
+                value={formData[item.label]}
+                onChange={handleChange}
+                className="bg-(--inputColor) max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
+              >
+                {item.options.map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+
+              </select>
+            )}
           </div>
         )
       })}
+
       <div className="flex gap-10 pt-4">
         <button
           id="form"

@@ -7,13 +7,13 @@ export const storedLogToLog = (storedLog: StoredLog): Log => {
   return {
     id: storedLog.id,
     date: new Date(storedLog.date),
+    mountain: storedLog.mountain,
+    weather: storedLog.weather,
     start: new Date(storedLog.start),
     goal: new Date(storedLog.goal),
     breakMin: storedLog.breakMin,
-    mountain: storedLog.mountain,
     entry: storedLog.entry,
     exit: storedLog.exit,
-    weather: { ...storedLog.weather }
   }
 }
 
@@ -27,18 +27,13 @@ export const formLogToLog = (formLog: FormLog): Log => {
   return {
     id: crypto.randomUUID(),
     date: new Date(formLog.date),
+    mountain: formLog.mountain,
+    weather: formLog.weather,
     start,
     goal,
     breakMin: Number(formLog.breakMin),
-    mountain: formLog.mountain,
     entry: formLog.entry,
     exit: formLog.exit,
-    // weather info to be fetched via fetchWeather.ts
-    weather: {
-      main: "",
-      description: "",
-      icon: "",
-    },
   }
 }
 
@@ -47,13 +42,13 @@ export const logToStoredLog = (log: Log): StoredLog => {
   return {
     id: log.id,
     date: log.date.toISOString(),
+    mountain: log.mountain,
+    weather: log.weather,
     start: log.start.toISOString(),
     goal: log.goal.toISOString(),
     breakMin: log.breakMin,
-    mountain: log.mountain,
     entry: log.entry,
     exit: log.exit,
-    weather: { ...log.weather }
   }
 }
 

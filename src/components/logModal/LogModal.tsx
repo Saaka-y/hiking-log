@@ -26,6 +26,7 @@ export function LogModal({ onCancel }: Props) {
   const listItems: listItems[] = [
     { label: "date", info: log.date.toISOString().slice(0, 10) },
     { label: "mountain", info: log.mountain },
+    { label: "weatehr", info: log.weather },
     { label: "start", info: showTime(log.start) },
     { label: "goal", info: showTime(log.goal) },
     { label: "breakMin", info: log.breakMin },
@@ -45,8 +46,11 @@ export function LogModal({ onCancel }: Props) {
     <div className="p-4 flex flex-col justify-center items-center gap-5 ">
       <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 ">
         {listItems.map((item, i) => (
-          <li key={i} className="flex justify-center border-b-amber-400 my-1">
-            <p className="w-24 md:w-30">{item.label} </p><p className="">{item.info}</p>
+          <li key={i} className="flex justify-center my-1 text-xs ">
+            <p className=" w-24 md:w-30 ">
+              {item.label === "breakMin" ? "Break" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}
+            </p>
+            <p className="w-24 md:w-30 ">{item.info} {item.label === "breakMin" && "mins"}</p>
           </li>
         ))}
       </ul>
