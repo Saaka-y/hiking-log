@@ -8,6 +8,9 @@ import { StoredLog } from "@/types/log";
 
 type LogStore = {
   storedLogs: StoredLog[]; // data from localStrage to be merged automatically
+  selectedLogId: string | null;
+  selectLog: (id: string) => void;
+  clearSelectedLog: () => void;
   addLog: (log: StoredLog) => void;
   deleteLog: (id: string) => void;
 }
@@ -16,6 +19,9 @@ export const useLogStore = create<LogStore>()(
   persist( // call localStorage.getItem / setItem ("logs") automatically
     (set) => ({
       storedLogs: [],
+      selectedLogId: null,
+      selectLog: (id) => set({selectedLogId: id}),
+      clearSelectedLog: () => set({ selectedLogId: null }),
 
       addLog: (log) =>
         set((state) => ({
