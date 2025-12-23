@@ -21,12 +21,24 @@ export function Form({ onCancel }: Props) {
     exit: "",
   })
 
+  const resetForm = () => {
+    setFormData({
+      date: "",
+      mountain: "",
+      start: "",
+      goal: "",
+      breakMin: "",
+      entry: "",
+      exit: "",
+    })
+  }
+
   // formData のキー名（"Date" | "Mountain" | ...）だけを label として使う型
   // 文字列、などではなく直接キー名を型として定義している
   // これにより、 item.label を使って formData に安全にアクセスできるからエラーが出ない
   type items = { label: keyof typeof formData, inputType: string }
 
-  const itemArray: items[] = [
+  const itemsForUi: items[] = [
     { label: "date", inputType: "date" },
     { label: "mountain", inputType: "text" },
     { label: "start", inputType: "time" },
@@ -54,17 +66,16 @@ export function Form({ onCancel }: Props) {
     console.log("Logからstorage用に変換：", l)
     addLog(newLog);
 
-    setFormData({
-      date: "",
-      mountain: "",
-      start: "",
-      goal: "",
-      breakMin: "",
-      entry: "",
-      exit: "",
-    })
-
+    resetForm();
     onCancel();
+  }
+
+  const handleCancel = () => {
+    const ok = window.confirm("Are you sure to cancel?");
+    if (!ok) return;
+
+    resetForm();
+    onCancel(); // ← Modal close
   }
 
 
@@ -74,7 +85,7 @@ export function Form({ onCancel }: Props) {
       onSubmit={handleSubmit}
       className="overflow-y-auto max-h-full flex flex-col justify-center items-center gap-5"
     >
-      {itemArray.map((item) => {
+      {itemsForUi.map((item) => {
         return (
           <div
             key={item.label}
@@ -94,23 +105,7 @@ export function Form({ onCancel }: Props) {
         <button
           id="form"
           type="button"
-          onClick={() => {
-            const ok = window.confirm("Are you sure to cancel?");
-            if (!ok) return;
-
-            // フォームをリセット（任意）
-            setFormData({
-              date: "",
-              mountain: "",
-              start: "",
-              goal: "",
-              breakMin: "",
-              entry: "",
-              exit: "",
-            });
-
-            onCancel(); // ← Modal close
-          }}
+          onClick={handleCancel}
           className="py-2 px-4 border-none rounded-xl bg-amber-500 text-white"
         >
           Cancel
