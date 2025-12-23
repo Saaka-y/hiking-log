@@ -17,7 +17,7 @@ export function Item({ log, onOpen }: Props) {
   }
 
   return (
-    <li key={log.id} onClick={handleOpen} className="bg-(--background) w-[90%] h-15 px-6 py-3 text-xs">
+    <li key={log.id} onClick={handleOpen} className="bg-(--background) w-[90%] h-15 px-6 py-3 text-xs text-(--color)">
       {/* UI for each log */}
       {log.date.toISOString().slice(0, 10)}
       <br />

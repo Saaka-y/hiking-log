@@ -6,7 +6,6 @@ import { storedLogToLog } from "@/utils/logConverter"
 export function filterLogs(logs: StoredLog[], keyword: string): Log[] { // keyword = input value in the search box
 
   const domainLogs: Log[] = logs.map(log => storedLogToLog(log));
-  console.log("変換後のdomainLogs: ", domainLogs);
 
   if (!keyword.trim()) {
     return domainLogs.slice(0, 5); // the latest 5 logs if no keyword input

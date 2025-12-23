@@ -90,13 +90,13 @@ export function Form({ onCancel }: Props) {
           <div
             key={item.label}
             className="flex flex-col items-start gap-2">
-            <label htmlFor={item.label} className="text-xs text-black">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}</label>
+            <label htmlFor={item.label} className="text-xs text-(--color)">{item.label === "breakMin" ? "Break Mins" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}</label>
             <input
               id={item.label}
               type={item.inputType}
               value={formData[item.label]}
               onChange={handleChange}
-              className="bg-blue-50 max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
+              className="bg-(--inputColor) max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
             />
           </div>
         )

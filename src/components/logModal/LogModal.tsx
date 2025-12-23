@@ -43,7 +43,7 @@ export function LogModal({ onCancel }: Props) {
 
   return (
     <div className="p-4 flex flex-col justify-center items-center gap-5 ">
-      <ul className="flex flex-col items-start w-full bg-blue-50 p-4 ">
+      <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 ">
         {listItems.map((item, i) => (
           <li key={i} className="flex justify-center border-b-amber-400 my-1">
             <p className="w-24 md:w-30">{item.label} </p><p className="">{item.info}</p>
@@ -58,7 +58,7 @@ export function LogModal({ onCancel }: Props) {
         <button
           type="button"
           onClick={handleDelete}
-          className="py-2 px-4 border-none rounded-xl bg-orange-700 text-white"
+          className="py-2 px-4 border-none rounded-xl bg-red-800 text-white"
         >
           Delete
         </button>

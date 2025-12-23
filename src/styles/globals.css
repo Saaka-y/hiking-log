@@ -3,12 +3,16 @@
 :root {
   --background: #ffffff;
   --foreground: #d4d7d8;
+  --color: #163c43;
+  --inputColor: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #163c43;
+    --background: #0e2d32;
     --foreground: #21626f;
+    --color: #bbc3c5;
+    --inputColor: #bbc3c5;
   }
 }
 
