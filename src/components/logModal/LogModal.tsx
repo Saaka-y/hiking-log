@@ -26,7 +26,7 @@ export function LogModal({ onCancel }: Props) {
   const listItems: listItems[] = [
     { label: "date", info: log.date.toISOString().slice(0, 10) },
     { label: "mountain", info: log.mountain },
-    { label: "weatehr", info: log.weather },
+    { label: "weather", info: log.weather },
     { label: "start", info: showTime(log.start) },
     { label: "goal", info: showTime(log.goal) },
     { label: "breakMin", info: log.breakMin },
