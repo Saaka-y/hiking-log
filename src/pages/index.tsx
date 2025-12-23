@@ -1,19 +1,19 @@
 import Modal from 'react-modal'
 import { useState } from 'react';
+import { useLogStore } from '@/stores/logStore';
 import { Header } from '@/components/mainView/Header'
 import { List } from '@/components/mainView/List';
 import { CreateBtn } from '@/components/mainView/CreateBtn';
 import { Form } from '@/components/formModal/Form'
 import { LogModal } from '@/components/logModal/LogModal';
 import { filterLogs } from "@/utils/filterLogs"
-import { useLogStore } from '@/stores/logStore';
 
 export default function Home() {
   const [formIsOpen, setFormIsOpen] = useState(false)
   const [logIsOpen, setLogIsOpen] = useState(false)
   const [keyword, setKeyword] = useState("");
 
-  const { storedLogs } = useLogStore();
+  const { storedLogs, clearSelectedLog } = useLogStore();
   const filteredLogs = filterLogs(storedLogs, keyword)
 
   return (
@@ -36,7 +36,10 @@ export default function Home() {
 
       <Modal
         isOpen={logIsOpen}
-        onRequestClose={() => setLogIsOpen(false)}
+        onRequestClose={() => {
+          setLogIsOpen(false)
+          clearSelectedLog()
+        }}
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
         className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
 

@@ -25,7 +25,7 @@ const weatherIcon = {
 
 
 export function LogModal({ onCancel }: Props) {
-  const { storedLogs, selectedLogId } = useLogStore();
+  const { storedLogs, selectedLogId, deleteLog } = useLogStore();
   const logs: Log[] = storedLogs.map(storedLogToLog) // Domain Log
   const log = logs.find(logs => logs.id === selectedLogId)
 
@@ -54,11 +54,15 @@ export function LogModal({ onCancel }: Props) {
   ]
 
   const handleDelete = () => {
-
+    if(!selectedLogId) return;
+    const ok = window.confirm("Are you sure to delete?");
+    if (!ok) return;
+    deleteLog(selectedLogId);
+    onCancel();
   }
 
   const handleEdit = () => {
-
+  
   }
 
   return (
