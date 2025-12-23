@@ -83,7 +83,7 @@ export function Form({ onCancel }: Props) {
               type={item.inputType}
               value={formData[item.label]}
               onChange={handleChange}
-              className="bg-blue-50 max-w-50 min-w-50  p-2 text-xs rounded-xl"
+              className="bg-blue-50 max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
             />
           </div>
         )

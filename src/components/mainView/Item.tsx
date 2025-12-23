@@ -10,7 +10,7 @@ export function Item({log, onOpen }: Props) {
 
 
   return (
-    <li onClick={onOpen} className="bg-(--background) w-[90%] h-full px-6 py-3 text-xs">
+    <li onClick={onOpen} className="bg-(--background) w-[90%] h-30 px-6 py-3 text-xs">
       {/* UI for each log */}
       {log.date.toISOString().slice(0,10)}
       <br/>
