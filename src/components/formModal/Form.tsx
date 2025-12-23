@@ -48,8 +48,8 @@ export function Form({ onCancel }: Props) {
     {
       label: "weather", type: "select", options: [
         "Clear",
-        "Mostly sunny",
-        "Partly cloudy",
+        "Partially sunny",
+        "Mostly cloudy",
         "Cloudy",
         "Light rain",
         "Rain",
@@ -126,6 +126,7 @@ export function Form({ onCancel }: Props) {
                 onChange={handleChange}
                 className="bg-(--inputColor) max-w-50 min-w-50 w-50 p-2 text-xs rounded-xl"
               >
+                <option value="">Select weather</option>
                 {item.options.map(opt => (
                   <option key={opt} value={opt}>{opt}</option>
                 ))}
