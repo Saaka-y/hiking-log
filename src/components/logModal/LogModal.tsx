@@ -1,19 +1,38 @@
 //@/components/logModal/LogModal.tsx
+import { ReactNode } from 'react';
+import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudyHigh, WiCloudy, WiDayRainMix, WiRain, WiRainWind, WiThunderstorm, WiSnowflakeCold, WiFog } from "react-icons/wi";
 import { Log } from '@/types/log';
 import { useLogStore } from '@/stores/logStore'
 import { storedLogToLog } from '@/utils/logConverter';
-import { ReactNode } from 'react';
 
 type Props = {
   onCancel: () => void;
 }
+
+//** To be reviewed */ 
+const weatherIcon = {
+  Clear: WiDaySunny,
+  "Mostly sunny": WiDaySunnyOvercast,
+  "Partly cloudy": WiDayCloudyHigh,
+  Cloudy: WiCloudy,
+  "Light rain": WiDayRainMix,
+  Rain: WiRain,
+  "Heavy rain": WiRainWind,
+  Thunderstorm: WiThunderstorm,
+  Snow: WiSnowflakeCold,
+  "Fog / Mist": WiFog,
+} as const;
+
 
 export function LogModal({ onCancel }: Props) {
   const { storedLogs, selectedLogId } = useLogStore();
   const logs: Log[] = storedLogs.map(storedLogToLog) // Domain Log
   const log = logs.find(logs => logs.id === selectedLogId)
 
-  if(!log) return null; // Avoid undefined error
+  if (!log) return null; // Avoid undefined error
+
+  //** To be reviewed */ 
+  const Icon = weatherIcon[log.weather as keyof typeof weatherIcon];
 
   const showTime = (t: Date) => {
     const hour = t.getHours();
@@ -35,7 +54,7 @@ export function LogModal({ onCancel }: Props) {
   ]
 
   const handleDelete = () => {
-    
+
   }
 
   const handleEdit = () => {
@@ -43,10 +62,10 @@ export function LogModal({ onCancel }: Props) {
   }
 
   return (
-    <div className="p-4 flex flex-col justify-center items-center gap-5 ">
-      <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 ">
+    <div className="p-4 flex flex-col justify-center items-center ">
+      <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 border-0">
         {listItems.map((item, i) => (
-          <li key={i} className="flex justify-center my-1 text-xs ">
+          <li key={i} className="flex justify-center py-1 text-xs md:text-sm ">
             <p className=" w-24 md:w-30 ">
               {item.label === "breakMin" ? "Break" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}
             </p>
@@ -54,9 +73,11 @@ export function LogModal({ onCancel }: Props) {
           </li>
         ))}
       </ul>
-      <div>
-        <p>weather</p>
-        <p>icon</p>
+
+      {/* weather info */}
+      <div className='flex flex-col items-center w-full bg-(--inputColor) mb-4 py-4'>
+        <p className='mb-2'>{log.weather}</p>
+        {Icon && <Icon size={60} />}
       </div>
       <div className="flex gap-10 pt-4">
         <button
