@@ -29,12 +29,16 @@ export default function Home() {
         onRequestClose={() => setFormIsOpen(false)} 
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
         className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
-
       >
         <Form onCancel={() => setFormIsOpen(false)}/>
       </Modal>
 
-      <Modal isOpen={logIsOpen}>
+      <Modal 
+        isOpen={logIsOpen}
+        onRequestClose={() => setLogIsOpen(false)} 
+        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
+        className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
+      >
         <LogModal />
       </Modal>
     </div>

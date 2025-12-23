@@ -11,7 +11,7 @@ type Props = {
 export function List({ onOpen, filteredLogs }: Props) {
 
   return (
-    <ul className="flex flex-col justify-center items-center gap-4 bg-(--foreground) w-[80%] h-full py-8 overflow-y-auto">
+    <ul className="flex flex-col items-center gap-4 bg-(--foreground) w-[80%] h-full py-4 overflow-y-auto">
       {filteredLogs.map(log => (
         <Item 
           key={log.id}
