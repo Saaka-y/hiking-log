@@ -47,10 +47,16 @@ export function Form({ onCancel }: Props) {
     { label: "mountain", type: "input", inputType: "text" },
     {
       label: "weather", type: "select", options: [
-        "Clear sky",
+        "Clear",
+        "Mostly sunny",
+        "Partly cloudy",
         "Cloudy",
-        "Partially rainy",
-        "Rainy",
+        "Light rain",
+        "Rain",
+        "Heavy rain",
+        "Thunderstorm",
+        "Snow",
+        "Fog / Mist"
       ]
     },
     { label: "start", type: "input", inputType: "time" },
@@ -73,9 +79,7 @@ export function Form({ onCancel }: Props) {
     if (!formData) return;
 
     const l = formLogToLog(formData); // Convert formData to DomainLog
-    console.log("formからLogに変換：", l)
     const newLog = logToStoredLog(l); // Convert DomainLog to StoredLog
-    console.log("Logからstorage用に変換：", l)
     addLog(newLog);
 
     resetForm();
