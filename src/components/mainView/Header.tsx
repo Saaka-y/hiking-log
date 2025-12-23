@@ -1,6 +1,5 @@
 //@/components/mainView/Header.tsx
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-
 import { Dispatch, SetStateAction } from "react"
 
 type Props = {
@@ -11,7 +10,7 @@ type Props = {
 export function Header({ keyword, setKeyword }: Props) {
 
   return (
-    <div className="flex justify-between items-center bg-(--foreground) w-[80%] h-20 px-6 md:px-10 rounded-full">
+    <div className="flex justify-between items-center bg-(--foreground) w-[80%] h-16 px-6 md:px-10 rounded-full">
     <input
       type="text"
       value={keyword}
