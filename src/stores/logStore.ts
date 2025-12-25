@@ -13,6 +13,7 @@ type LogStore = {
   clearSelectedLog: () => void;
   addLog: (log: StoredLog) => void;
   deleteLog: (id: string) => void;
+  updateLog: (log: StoredLog) => void;
 }
 
 export const useLogStore = create<LogStore>()(
@@ -32,7 +33,13 @@ export const useLogStore = create<LogStore>()(
         set((state) => ({
           storedLogs: state.storedLogs.filter((log) => log.id !== id),
         })),
+      
+      updateLog: (editedLog) => 
+        set((state) => ({
+          storedLogs: state.storedLogs.map(log => log.id === editedLog.id ? editedLog : log),
+        })),
     }),
+
     {
       name: "logs",
       storage: createJSONStorage(() => localStorage),
