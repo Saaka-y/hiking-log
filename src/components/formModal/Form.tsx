@@ -76,7 +76,16 @@ export function Form({ onCancel }: Props) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData) return;
+    if ( // To be refactored in the future
+      !formData.date ||
+      !formData.mountain ||
+      !formData.weather ||
+      !formData.start ||
+      !formData.goal
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
 
     const l = formLogToLog(formData); // Convert formData to DomainLog
     const newLog = logToStoredLog(l); // Convert DomainLog to StoredLog
@@ -142,7 +151,7 @@ export function Form({ onCancel }: Props) {
           id="form"
           type="button"
           onClick={handleCancel}
-          className="py-2 px-4 border-none rounded-xl bg-amber-500 text-white"
+          className="py-2 px-4 border-none rounded-xl bg-gray-400 hover:bg-gray-500 text-white"
         >
           Cancel
         </button>
