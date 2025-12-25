@@ -17,7 +17,7 @@ export default function Home() {
   const filteredLogs = filterLogs(storedLogs, keyword)
 
   return (
-    <div className='w-screen h-screen flex flex-col justify-center items-center'>
+    <div className='w-screen h-dvh flex flex-col justify-center items-center'>
       <div className='w-[90%] max-w-187 h-[60%] flex flex-col justify-around items-center gap-5'>
         <Header keyword={keyword} setKeyword={setKeyword} />
         <List onOpen={() => setLogIsOpen(true)} filteredLogs={filteredLogs} />
