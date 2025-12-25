@@ -12,8 +12,8 @@ type Props = {
 //** To be reviewed */ 
 const weatherIcon = {
   Clear: WiDaySunny,
-  "Mostly sunny": WiDaySunnyOvercast,
-  "Partly cloudy": WiDayCloudyHigh,
+  "Partially sunny": WiDaySunnyOvercast,
+  "Mostly cloudy": WiDayCloudyHigh,
   Cloudy: WiCloudy,
   "Light rain": WiDayRainMix,
   Rain: WiRain,
