@@ -15,7 +15,7 @@ export function Header({ keyword, setKeyword }: Props) {
       type="text"
       value={keyword}
       className=" h-full"
-      placeholder="Put a mountain name"
+      placeholder="Enter the mountain"
       onChange={(e) => setKeyword(e.target.value)}
     />
       <HiMiniMagnifyingGlass size={18}  />

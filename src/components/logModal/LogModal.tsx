@@ -25,17 +25,15 @@ const weatherIcon = {
 } as const;
 
 
-type EditableKey = "mountain" | "weather" | "entry" | "exit";
-
+// For Edit modal
+type EditableKey = "mountain" | "entry" | "exit";
 type EditableField = {
   label: string;
   key: EditableKey;
   type: "text";
 };
-
 const editableFields: EditableField[] = [
   { label: "Mountain", key: "mountain", type: "text" },
-  { label: "Weather", key: "weather", type: "text" },
   { label: "Entry", key: "entry", type: "text" },
   { label: "Exit", key: "exit", type: "text" },
 ];
@@ -43,16 +41,17 @@ const editableFields: EditableField[] = [
 
 export function LogModal({ onCancel }: Props) {
   const [isEditOpen, setIsEditOpen] = useState(false); // For Edit UI
-  const [draft, setDraft] = useState<Log | null>(null);
+  const [draft, setDraft] = useState<Log | null>(null); // Editing state
   const { storedLogs, selectedLogId, deleteLog, updateLog } = useLogStore();
-  const logs: Log[] = storedLogs.map(storedLogToLog) // Domain Log
-  const log = logs.find(logs => logs.id === selectedLogId)
+  const logs: Log[] = storedLogs.map(storedLogToLog) // Convert to Domain Log
+  const log = logs.find(logs => logs.id === selectedLogId) // Selected Log
 
   if (!log) return null; // Avoid undefined error
 
   //** To be reviewed */ 
   const Icon = weatherIcon[log.weather as keyof typeof weatherIcon];
 
+  // Set Time Ui
   const showTime = (t: Date) => {
     const hour = t.getHours();
     const min = t.getMinutes();
@@ -60,6 +59,7 @@ export function LogModal({ onCancel }: Props) {
     return time;
   }
 
+  // For Log Ui (readonly)
   type listItems = { label: string, info: string | number, isEditable: boolean } // Still working on if it should be changed to ReactNode type
   const listItems: listItems[] = [
     { label: "date", info: log.date.toISOString().slice(0, 10), isEditable: false },
@@ -72,6 +72,7 @@ export function LogModal({ onCancel }: Props) {
     { label: "exit", info: log.exit, isEditable: true },
   ]
 
+
   const handleDelete = () => {
     if (!selectedLogId) return;
     const ok = window.confirm("Are you sure to delete?");
@@ -79,8 +80,6 @@ export function LogModal({ onCancel }: Props) {
     deleteLog(selectedLogId);
     onCancel();
   }
-
-
 
   const handleEdit = () => {
     setIsEditOpen(true);
@@ -107,7 +106,7 @@ export function LogModal({ onCancel }: Props) {
             <p className=" w-24 md:w-30 ">
               {item.label === "breakMin" ? "Break" : item.label.charAt(0).toUpperCase() + item.label.slice(1)}
             </p>
-            <p className="w-24 md:w-30 ">{item.info} {item.label === "breakMin" && "mins"}</p>
+            <p className="w-24 md:w-30 ">{item.label === "mountain" && "Mt. "}{item.info} {item.label === "breakMin" && "mins"}</p>
           </li>
         ))}
       </ul>
@@ -120,15 +119,15 @@ export function LogModal({ onCancel }: Props) {
             setDraft(null);
           }}
           overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
-          className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
+          className="flex flex-col justify-center items-center bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
         >
-          <ul>
+          <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 border-0">
             {/* 編集したい行だけ */}
 
             {editableFields
               .map((item) => (
-                <li key={item.label}>
-                  <p>{item.label.charAt(0).toUpperCase() + item.label.slice(1)}</p>
+                <li key={item.label} className="flex justify-center py-1 text-xs md:text-sm ">
+                  <p className=" w-24 md:w-30 ">{item.label.charAt(0).toUpperCase() + item.label.slice(1)}</p>
                   <input
                     value={draft[item.key]}
                     onChange={(e) => {
@@ -137,18 +136,34 @@ export function LogModal({ onCancel }: Props) {
                           e.target.value
                       })
                     }}
+                    className=" w-24 md:w-30 px-2  bg-amber-300 focus:ring-yellow-500 rounded-md focus:outline-none focus:ring-2"
                   />
                 </li>
               ))}
           </ul>
 
-          <button
-            type="button"
-            onClick={handleSave}
-            className="py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
-          >
-            Save
-          </button>
+          <div className="flex gap-10 pt-4">
+            <button
+              id="form"
+              type="button"
+              onClick={() => {
+                const ok = window.confirm("Are you sure to cancel?");
+                if (!ok) return;
+                setDraft(null);
+                setIsEditOpen(false); // ← Modal close
+              }}
+              className="mt-4 py-2 px-4 rounded-xl bg-gray-400 hover:bg-gray-500 text-white"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              className="mt-4 py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
+            >
+              Save
+            </button>
+          </div>
         </Modal>
       )}
 
