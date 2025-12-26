@@ -4,6 +4,8 @@
 
 A Next.js web application for tracking and managing your hiking adventures. Record details about your hikes including date, mountain, weather conditions, timing, and entry/exit points.
 
+🌐 **Live Demo**: [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
+
 ## Background
 
 This project was born from challenges I faced in previous projects (Todo_list and geoyama).
@@ -66,6 +68,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
 
+Or visit the live demo at [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
+
 ### Build
 
 ```bash
@@ -113,6 +117,8 @@ Saaka-y
 > **ポートフォリオプロジェクト** - Next.js、TypeScript、状態管理を使用したモダンなWeb開発スキルのデモンストレーションです。
 
 登山の記録を管理するためのNext.jsウェブアプリケーションです。日付、山名、天気、時間、登山口/下山口などの詳細情報を記録できます。
+
+🌐 **デモサイト**: [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
 
 ## 背景
 
@@ -175,6 +181,8 @@ npm run dev
 ```
 
 ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリを表示します。
+
+または、デモサイト [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/) にアクセスしてください。
 
 ### ビルド
 
