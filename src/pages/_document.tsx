@@ -5,9 +5,9 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" cross-origin />
-            <link href="https://fonts.googleapis.com/css2?family=Actor&display=swap" rel="stylesheet" />
-          </Head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Actor&display=swap" rel="stylesheet" />
+      </Head>
           <body className="antialiased">
             <Main />
             <NextScript />

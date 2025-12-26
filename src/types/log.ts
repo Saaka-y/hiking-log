@@ -1,10 +1,24 @@
 // @/types/log.ts
 
+// Define valid weather conditions as a union type
+// This ensures type safety - only these exact strings are allowed
+export type Weather = 
+  | "Clear"
+  | "Partially sunny"
+  | "Mostly cloudy"
+  | "Cloudy"
+  | "Light rain"
+  | "Rain"
+  | "Heavy rain"
+  | "Thunderstorm"
+  | "Snow"
+  | "Fog / Mist";
+
 // The first data created by user input
 export type FormLog = {
   date: string;
   mountain: string;
-  weather: string;
+  weather: Weather; // Now type-safe!
   start: string;
   goal: string;
   breakMin: string;
@@ -17,7 +31,7 @@ export type Log = {
 id: string;
 date: Date;        
 mountain: string;
-weather: string;
+weather: Weather; // Now type-safe!
 start: Date;       
 goal: Date;  
 breakMin: number;
@@ -30,7 +44,7 @@ export type StoredLog = {
   id: string;
   date: string;
   mountain: string;
-  weather: string;
+  weather: Weather; // Now type-safe!
   start: string;
   goal: string;
   breakMin: number;

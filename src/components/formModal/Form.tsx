@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLogStore } from "@/stores/logStore";
 import { FormLog } from "@/types/log";
 import { formLogToLog, logToStoredLog } from "@/utils/logConverter";
+import { WEATHER_OPTIONS } from "@/constants/weather";
 
 type Props = {
   onCancel: () => void;
@@ -35,30 +36,16 @@ export function Form({ onCancel }: Props) {
     })
   }
 
-  // formData のキー名（"Date" | "Mountain" | ...）を label として使う型
-  // 文字列、などではなく直接キー名を型として定義している
-  // これにより、 item.label を使って formData に安全にアクセスできるからエラーが出ない
+  // Type definition for form items
+  // Using keyof FormLog ensures we can only reference valid form fields
   type FormItem =
     | { label: keyof FormLog; type: "input"; inputType: string }
-    | { label: keyof FormLog; type: "select"; options: string[] };
+    | { label: keyof FormLog; type: "select"; options: readonly string[] };
 
   const itemsForUi: FormItem[] = [
     { label: "date", type: "input", inputType: "date" },
     { label: "mountain", type: "input", inputType: "text" },
-    {
-      label: "weather", type: "select", options: [
-        "Clear",
-        "Partially sunny",
-        "Mostly cloudy",
-        "Cloudy",
-        "Light rain",
-        "Rain",
-        "Heavy rain",
-        "Thunderstorm",
-        "Snow",
-        "Fog / Mist"
-      ]
-    },
+    { label: "weather", type: "select", options: WEATHER_OPTIONS },
     { label: "start", type: "input", inputType: "time" },
     { label: "goal", type: "input", inputType: "time" },
     { label: "breakMin", type: "input", inputType: "number" },
@@ -76,15 +63,28 @@ export function Form({ onCancel }: Props) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if ( // To be refactored in the future
-      !formData.date ||
-      !formData.mountain ||
-      !formData.weather ||
-      !formData.start ||
-      !formData.goal
-    ) {
-      alert("Please fill all the fields");
+    
+    // Improved validation with specific error messages
+    if (!formData.date || !formData.mountain || !formData.weather || !formData.start || !formData.goal) {
+      alert("Please fill all required fields (Date, Mountain, Weather, Start, Goal)");
       return;
+    }
+
+    // Validate that breakMin is not negative
+    const breakMinNum = Number(formData.breakMin);
+    if (formData.breakMin && breakMinNum < 0) {
+      alert("Break minutes cannot be negative");
+      return;
+    }
+
+    // Validate that goal time is after start time
+    if (formData.start && formData.goal && formData.date) {
+      const startTime = new Date(`${formData.date}T${formData.start}`);
+      const goalTime = new Date(`${formData.date}T${formData.goal}`);
+      if (goalTime <= startTime) {
+        alert("Goal time must be after start time");
+        return;
+      }
     }
 
     const l = formLogToLog(formData); // Convert formData to DomainLog
@@ -148,7 +148,6 @@ export function Form({ onCancel }: Props) {
 
       <div className="flex gap-10 pt-4">
         <button
-          id="form"
           type="button"
           onClick={handleCancel}
           className="py-2 px-4 border-none rounded-xl bg-gray-400 hover:bg-gray-500 text-white"
@@ -156,7 +155,6 @@ export function Form({ onCancel }: Props) {
           Cancel
         </button>
         <button
-          id="form"
           type="submit"
           className="py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
         >

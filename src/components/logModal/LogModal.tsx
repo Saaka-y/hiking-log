@@ -2,7 +2,7 @@
 import Modal from 'react-modal'
 import { useState } from 'react';
 import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudyHigh, WiCloudy, WiDayRainMix, WiRain, WiRainWind, WiThunderstorm, WiSnowflakeCold, WiFog } from "react-icons/wi";
-import { Log } from '@/types/log';
+import { Log, Weather } from '@/types/log';
 import { useLogStore } from '@/stores/logStore'
 import { logToStoredLog, storedLogToLog } from '@/utils/logConverter';
 
@@ -10,8 +10,8 @@ type Props = {
   onCancel: () => void;
 }
 
-//** To be reviewed */ 
-const weatherIcon = {
+// Type-safe weather icon mapping using the Weather union type
+const weatherIcon: Record<Weather, React.ComponentType<{ size?: number }>> = {
   Clear: WiDaySunny,
   "Partially sunny": WiDaySunnyOvercast,
   "Mostly cloudy": WiDayCloudyHigh,
@@ -22,7 +22,7 @@ const weatherIcon = {
   Thunderstorm: WiThunderstorm,
   Snow: WiSnowflakeCold,
   "Fog / Mist": WiFog,
-} as const;
+};
 
 
 // For Edit modal
@@ -48,8 +48,8 @@ export function LogModal({ onCancel }: Props) {
 
   if (!log) return null; // Avoid undefined error
 
-  //** To be reviewed */ 
-  const Icon = weatherIcon[log.weather as keyof typeof weatherIcon];
+  // Now type-safe! No need for 'as' assertion since log.weather is already typed as Weather
+  const Icon = weatherIcon[log.weather];
 
   // Set Time Ui
   const showTime = (t: Date) => {
@@ -60,8 +60,13 @@ export function LogModal({ onCancel }: Props) {
   }
 
   // For Log Ui (readonly)
-  type listItems = { label: string, info: string | number, isEditable: boolean } // Still working on if it should be changed to ReactNode type
-  const listItems: listItems[] = [
+  type ListItem = {
+    label: string;
+    info: string | number;
+    isEditable: boolean;
+  }
+
+  const listItems: ListItem[] = [
     { label: "date", info: log.date.toISOString().slice(0, 10), isEditable: false },
     { label: "mountain", info: log.mountain, isEditable: true },
     { label: "weather", info: log.weather, isEditable: true },
@@ -111,6 +116,7 @@ export function LogModal({ onCancel }: Props) {
         ))}
       </ul>
 
+      {/*******  Edit modal ********/}
       {isEditOpen && draft && (
         <Modal
           isOpen={isEditOpen}
@@ -122,7 +128,6 @@ export function LogModal({ onCancel }: Props) {
           className="flex flex-col justify-center items-center bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
         >
           <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 border-0">
-            {/* 編集したい行だけ */}
 
             {editableFields
               .map((item) => (
