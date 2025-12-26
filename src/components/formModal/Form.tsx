@@ -15,7 +15,7 @@ export function Form({ onCancel }: Props) {
   const [formData, setFormData] = useState<FormLog>({
     date: "",
     mountain: "",
-    weather: "",
+    weather: "Clear",
     start: "",
     goal: "",
     breakMin: "",
@@ -27,7 +27,7 @@ export function Form({ onCancel }: Props) {
     setFormData({
       date: "",
       mountain: "",
-      weather: "",
+      weather: "Clear",
       start: "",
       goal: "",
       breakMin: "",
