@@ -1,62 +1,184 @@
-# Hiking Log
 
-> **Portfolio Project** - A demonstration of modern web development skills using Next.js, TypeScript, and state management.
+*英語版は下にあります / English version below*
 
-A Next.js web application for tracking and managing your hiking adventures. Record details about your hikes including date, mountain, weather conditions, timing, and entry/exit points.
+# 🏔️ Hiking Log
+
+シンプルな登山の記録をつけるためのWebアプリです。日付、山名、天気、時間、登山口/下山口などを記録できます。前回の山行条件（天気や歩行速度）を簡単に確認するために、自分でも使用しています。
+
+🌐 **デモサイト**: [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
+
+## 開発背景
+
+過去のプロジェクト（geoyama、Todo_list）で直面した以下の課題を解決するために作成しました：
+
+- **複雑化する状態管理** - コンポーネントが増えるにつれて、propsのバケツリレーが煩雑に。特にgeoyamaでは、MapboxとReactの連携でグローバルに管理すべき状態が多く苦労した
+- **型管理の問題** - コメントでの型管理は非効率でエラーが発生しやすい
+- **事前設計の欠如** - 計画なしに機能を追加していった結果、互換性の問題や複雑な状態管理に直面した
+
+これらの課題を解決するため、以下の技術を学習・導入しました：
+- **Zustand** - グローバル状態管理ライブラリ
+- **TypeScript** - 静的型付けによる型安全性
+- **設計ファーストアプローチ** - データ型、UI、コンポーネント構造を事前に設計
+
+### プロジェクトの目的
+
+このプロジェクトは **TypeScriptの基礎を学ぶこと** と **設計ファーストアプローチの実践** を主な目的としているため、機能は意図的にシンプルに保っています。複雑な機能の実装よりも、設計→実装のワークフローを習得することに重点を置きました。
+
+事前に全体の設計を完了させてから実装を開始しました。TypeScriptでのZustandストアの型定義に最初は苦戦しましたが、結果としてコードの可読性が大幅に向上し、データフローもシンプルになりました。設計の重要性を実感できる良い学習機会となりました。
+
+## 機能
+
+- 📝 登山記録の作成
+- 🔍 記録の検索とフィルタリング（英語山名のみ）
+- ✏️ 記録の編集（山名、登山口、下山口）
+- 🗑️ 記録の削除
+- 💾 ローカルストレージでのデータ永続化（将来的にはバックエンド・DB連携を予定）
+- 🌓 ダークモード対応
+- 🎨 天気アイコン表示
+
+## 使った技術
+
+- **Next.js 16** - Reactフレームワーク
+- **TypeScript** - 型安全性
+- **Tailwind CSS 4** - スタイリング
+- **Zustand** - 状態管理
+- **React Modal** - モーダル
+- **React Icons** - アイコン
+
+## セットアップ
+
+### 前提条件
+
+- Node.js 20以上
+- npm, yarn, pnpm, bun のいずれか
+
+### インストール
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/Saaka-y/hiking-log.git
+
+# プロジェクトディレクトリに移動
+cd hiking-log
+
+# 依存関係をインストール
+npm install
+```
+
+### 開発サーバーの起動
+
+```bash
+npm run dev
+```
+
+ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリケーションを表示します。
+
+または、デモサイト [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/) にアクセスしてください。
+
+### ビルド
+
+```bash
+npm run build
+npm start
+```
+
+## フォルダ構成
+
+```
+hiking-log/
+├── src/
+│   ├── components/
+│   │   ├── formModal/     # 記録作成フォーム
+│   │   ├── logModal/      # 記録表示/編集モーダル
+│   │   └── mainView/      # メインリストとヘッダー
+│   ├── constants/         # 定数（天気オプションなど）
+│   ├── stores/            # Zustandストア
+│   ├── types/             # TypeScript型定義
+│   ├── utils/             # ユーティリティ関数
+│   └── pages/             # Next.jsページ
+└── public/                # 静的アセット
+```
+
+## データフロー
+
+アプリケーションでは3種類のログ型を使い分けています：
+
+1. **FormLog** - フォーム入力データ（すべて文字列型）
+2. **Log** - アプリ内部で使用するドメインモデル（Dateオブジェクト、数値型）
+3. **StoredLog** - localStorage用のシリアライズ可能な形式（文字列/数値型）
+
+## ライセンス
+
+MIT
+
+## 作成者
+
+Saaka-y
+
+
+---
+
+# 🏔️ Hiking Log (EN)
+
+A web app for tracking hiking adventures. Record date, mountain, weather, timing, entry/exit points and more.
 
 🌐 **Live Demo**: [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
 
 ## Background
 
-This project was born from challenges I faced in previous projects (Todo_list and geoyama).
+This project was built to address challenges I faced in previous projects (geoyama and Todo_list):
 
-- **State management complexity and props drilling** - As projects grew, passing props through multiple component layers became unwieldy
-- **Type management** - Managing data types through code comments was inefficient and error-prone
-- **Lack of upfront design** - Adding features without proper planning led to compatibility issues and convoluted state management (honestly, it was a nightmare)
+- **State management complexity** - As projects grew, passing props through multiple component layers became increasingly difficult, especially in geoyama where managing Mapbox and React integration required extensive global state
+- **Type management issues** - Managing types through comments was inefficient and error-prone
+- **Lack of upfront design** - Adding features without proper planning led to compatibility issues and complex state management
 
 To solve these challenges, I learned and implemented:
-- **Zustand** - Global state management (discovering this was an eye-opener)
-- **TypeScript** - Explicit type safety (I prefer it over JS because it gives me more confidence)
-- **Design-first approach** - Planning data types, UI, component structure, and state management before coding
+- **Zustand** - Global state management library
+- **TypeScript** - Static typing for type safety
+- **Design-first approach** - Planning data types, UI, and component structure before coding
 
-For this project, I completed all the design work before starting development. While I initially struggled with Zustand store type definitions in TypeScript, the result was dramatically improved code readability and simplified data flow. This was an excellent practice project for implementing modern React development best practices.
+### Project Goals
+
+This project is intentionally kept simple to focus on **learning TypeScript fundamentals** and **practicing the design-first approach**. Rather than building complex features, the emphasis was on mastering the design → implementation workflow.
+
+I completed all design work before starting development. While I initially struggled with Zustand store type definitions in TypeScript, the result was significantly improved code readability and simplified data flow. This was a valuable learning experience in understanding the importance of proper design.
 
 ## Features
 
-- 📝 **Create hiking logs** with detailed information
-- 🔍 **Search and filter** your hiking history
-- ✏️ **Edit logs** to update mountain name, entry, and exit points
-- 🗑️ **Delete logs** you no longer need
-- 💾 **Local storage** - all data persists in your browser (planning to learn backend and integrate a database in the future)
-- 🌓 **Dark mode** support based on system preferences
-- 🎨 **Weather icons** for visual representation
+- 📝 Create hiking logs
+- 🔍 Search and filter records (by a mountain name)
+- ✏️ Edit logs (mountain name, entry/exit points)
+- 🗑️ Delete logs
+- 💾 Local storage persistence (backend/database integration planned for future)
+- 🌓 Dark mode support
+- 🎨 Weather icons
 
 ## Tech Stack
 
 - **Next.js 16** - React framework
 - **TypeScript** - Type safety
 - **Tailwind CSS 4** - Styling
-- **Zustand** - State management with local storage persistence
-- **React Modal** - Modal dialogs
-- **React Icons** - Weather icons
+- **Zustand** - State management
+- **React Modal** - Modals
+- **React Icons** - Icons
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 
-- Node.js 20+ installed
+- Node.js 20+
 - npm, yarn, pnpm, or bun
 
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/Saaka-y/hiking-log.git
 
-# Navigate to project directory
+# Navigate
 cd hiking-log
 
-# Install dependencies
+# Install
 npm install
 ```
 
@@ -66,9 +188,9 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Or visit the live demo at [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
+Or check out the demo at [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
 
 ### Build
 
@@ -84,143 +206,31 @@ hiking-log/
 ├── src/
 │   ├── components/
 │   │   ├── formModal/     # Create log form
-│   │   ├── logModal/      # View/Edit log modal
-│   │   └── mainView/      # Main list and header
-│   ├── constants/         # Shared constants (weather options)
-│   ├── stores/            # Zustand store for state management
-│   ├── types/             # TypeScript type definitions
-│   ├── utils/             # Utility functions (converters, filters)
+│   │   ├── logModal/      # View/edit modal
+│   │   └── mainView/      # Main list & header
+│   ├── constants/         # Constants (weather options, etc.)
+│   ├── stores/            # Zustand store
+│   ├── types/             # TypeScript types
+│   ├── utils/             # Utility functions
 │   └── pages/             # Next.js pages
 └── public/                # Static assets
 ```
 
 ## Data Flow
 
-The app uses three different log type representations:
+Uses 3 different log type representations:
 
-1. **FormLog** - Raw form input data (all strings)
-2. **Log** - Domain model with proper types (Date objects, numbers)
-3. **StoredLog** - Serializable format for localStorage (all strings/numbers)
+Uses 3 different log type representations:
+
+1. **FormLog** - Raw form input (all strings)
+2. **Log** - App data model (Date objects, numbers)
+3. **StoredLog** - localStorage format (strings/numbers)
 
 ## License
 
-This project is open source and available under the MIT License.
+MIT
 
 ## Author
-
-Saaka-y
-
----
-
-# Hiking Log (日本語版)
-
-> **ポートフォリオプロジェクト** - Next.js、TypeScript、状態管理を使用したモダンなWeb開発スキルのデモンストレーションです。
-
-登山の記録を管理するためのNext.jsウェブアプリケーションです。日付、山名、天気、時間、登山口/下山口などの詳細情報を記録できます。
-
-🌐 **デモサイト**: [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/)
-
-## 背景
-
-このプロジェクトは、過去のプロジェクト（Todo_listやgeoyama）で直面した以下の課題を解決するために作りました。
-
-- **複雑化する状態管理とprops地獄** - プロジェクトが大きくなるにつれて、複数のコンポーネント層を通してpropsを渡すことが煩雑になった
-- **型管理の問題** - データ型をコメントで管理していたが、非効率でエラーが発生しやすかった
-- **事前設計の欠如** - 適切な計画なしに機能を追加していったため、互換性の問題や状態管理の複雑化に直面した（正直これは地獄だった）
-
-これらの課題を解決するためには、以下の技術を学ぶと良いと知り、学習を始めました。
-- **Zustand** - グローバル状態管理（この存在を知ったときは目から鱗でした）
-- **TypeScript** - 明示的な型安全性（JSよりも安心できるので好きです）
-- **設計優先のアプローチ** - コーディング前にデータ型、UI、コンポーネント構造、状態管理方法を設計
-
-このプロジェクトでは、最初にこれらの設計を行ってから開発を始めました。TypeScriptにおけるZustandストアの型定義で最初はつまづきましたが、結果的にこれまでより圧倒的に可読性が上がり、データの流れもシンプルにすることができました。モダンなReact開発のベストプラクティスを実践する、とても良い開発練習となりました。
-
-## 機能
-
-- 📝 **登山記録の作成** - 詳細な情報を含む記録を作成
-- 🔍 **検索とフィルタリング** - 登山履歴を検索
-- ✏️ **記録の編集** - 山名、登山口、下山口を更新
-- 🗑️ **記録の削除** - 不要な記録を削除
-- 💾 **ローカルストレージ** - ブラウザにすべてのデータを保存 (ゆくゆくはバックエンドを学びDBを使えるようにする予定です)
-- 🌓 **ダークモード対応** - システム設定に基づいた表示
-- 🎨 **天気アイコン** - 視覚的な表現
-
-## 技術スタック
-
-- **Next.js 16** - Reactフレームワーク
-- **TypeScript** - 型安全性
-- **Tailwind CSS 4** - スタイリング
-- **Zustand** - ローカルストレージ永続化を伴う状態管理
-- **React Modal** - モーダルダイアログ
-- **React Icons** - 天気アイコン
-
-## セットアップ
-
-### 前提条件
-
-- Node.js 20以上がインストールされていること
-- npm、yarn、pnpm、またはbun
-
-### インストール
-
-```bash
-# リポジトリをクローン
-git clone https://github.com/Saaka-y/hiking-log.git
-
-# プロジェクトディレクトリに移動
-cd hiking-log
-
-# 依存関係をインストール
-npm install
-```
-
-### 開発
-
-```bash
-npm run dev
-```
-
-ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリを表示します。
-
-または、デモサイト [https://hiking-log-nu.vercel.app/](https://hiking-log-nu.vercel.app/) にアクセスしてください。
-
-### ビルド
-
-```bash
-npm run build
-npm start
-```
-
-## プロジェクト構造
-
-```
-hiking-log/
-├── src/
-│   ├── components/
-│   │   ├── formModal/     # 記録作成フォーム
-│   │   ├── logModal/      # 記録表示/編集モーダル
-│   │   └── mainView/      # メインリストとヘッダー
-│   ├── constants/         # 共通定数（天気オプション）
-│   ├── stores/            # Zustandストアによる状態管理
-│   ├── types/             # TypeScript型定義
-│   ├── utils/             # ユーティリティ関数（変換、フィルター）
-│   └── pages/             # Next.jsページ
-└── public/                # 静的アセット
-```
-
-## データフロー
-
-アプリは3種類の異なるログ型表現を使用しています：
-
-1. **FormLog** - 生のフォーム入力データ（すべて文字列）
-2. **Log** - 適切な型を持つドメインモデル（Dateオブジェクト、数値）
-3. **StoredLog** - localStorage用のシリアライズ可能な形式（すべて文字列/数値）
-
-## ライセンス
-
-このプロジェクトはオープンソースで、MITライセンスの下で利用可能です。
-
-## 作成者
 
 Saaka-y
 
