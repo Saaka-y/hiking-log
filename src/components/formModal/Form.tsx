@@ -40,7 +40,7 @@ export function Form({ onCancel }: Props) {
   // Using keyof FormLog ensures we can only reference valid form fields
   type FormItem =
     | { label: keyof FormLog; type: "input"; inputType: string }
-    | { label: keyof FormLog; type: "select"; options: readonly string[] };
+    | { label: keyof FormLog; type: "select"; options: readonly string[] }; 
 
   const itemsForUi: FormItem[] = [
     { label: "date", type: "input", inputType: "date" },
