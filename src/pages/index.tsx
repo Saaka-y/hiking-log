@@ -1,4 +1,3 @@
-import Modal from 'react-modal'
 import { useState } from 'react';
 import { useLogStore } from '@/stores/logStore';
 import { Header } from '@/components/mainView/Header'
@@ -7,6 +6,7 @@ import { CreateBtn } from '@/components/mainView/CreateBtn';
 import { Form } from '@/components/formModal/Form'
 import { LogModal } from '@/components/logModal/LogModal';
 import { filterLogs } from "@/utils/filterLogs"
+import { CommonModal } from '@/components/CommonModal';
 
 export default function Home() {
   const [formIsOpen, setFormIsOpen] = useState(false)
@@ -24,28 +24,22 @@ export default function Home() {
         <CreateBtn setFormIsOpen={setFormIsOpen} />
       </div>
 
-      <Modal
+      <CommonModal
         isOpen={formIsOpen}
-        onRequestClose={() => setFormIsOpen(false)}
-        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
-        className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
-
+        closeModal={() => setFormIsOpen(false)}
       >
         <Form onCancel={() => setFormIsOpen(false)} />
-      </Modal>
+      </CommonModal>
 
-      <Modal
+      <CommonModal
         isOpen={logIsOpen}
-        onRequestClose={() => {
+        closeModal={() => {
           setLogIsOpen(false)
           clearSelectedLog()
         }}
-        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
-        className="bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
-
       >
         <LogModal onCancel={() => setLogIsOpen(false)} />
-      </Modal>
+      </CommonModal>
     </div>
   );
 }
