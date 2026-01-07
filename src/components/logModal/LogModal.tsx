@@ -1,11 +1,13 @@
 //@/components/logModal/LogModal.tsx
 // Refered to https://reactcommunity.org/react-modal/
-import Modal from 'react-modal'
+
 import { useState } from 'react';
 import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudyHigh, WiCloudy, WiDayRainMix, WiRain, WiRainWind, WiThunderstorm, WiSnowflakeCold, WiFog } from "react-icons/wi";
 import { Log, Weather } from '@/types/log';
 import { useLogStore } from '@/stores/logStore'
-import { logToStoredLog, storedLogToLog } from '@/utils/logConverter';
+import { storedLogToLog } from '@/utils/logConverter';
+import { CommonModal } from '../CommonModal';
+import { EditModal } from './EditModal';
 
 type Props = {
   onClose: () => void;
@@ -26,30 +28,15 @@ const weatherIcon: Record<Weather, React.ComponentType<{ size?: number }>> = {
 };
 
 
-// For Edit modal
-type EditableKey = "mountain" | "entry" | "exit";
-type EditableField = {
-  label: string;
-  key: EditableKey;
-  type: "text";
-};
-const editableFields: EditableField[] = [
-  { label: "Mountain", key: "mountain", type: "text" },
-  { label: "Entry", key: "entry", type: "text" },
-  { label: "Exit", key: "exit", type: "text" },
-];
-
-
 export function LogModal({ onClose }: Props) {
   const [isEditOpen, setIsEditOpen] = useState(false); // For Edit UI
   const [draft, setDraft] = useState<Log | null>(null); // Editing state
-  const { storedLogs, selectedLogId, deleteLog, updateLog } = useLogStore();
+  const { storedLogs, selectedLogId, deleteLog } = useLogStore();
   const logs: Log[] = storedLogs.map(storedLogToLog) // Convert to Domain Log
   const log = logs.find(logs => logs.id === selectedLogId) // Selected Log
 
   if (!log) return null; // Avoid undefined error
 
-  // Now type-safe! No need for 'as' assertion since log.weather is already typed as Weather
   const Icon = weatherIcon[log.weather];
 
   // Set Time Ui
@@ -92,17 +79,6 @@ export function LogModal({ onClose }: Props) {
     setDraft(log);
   }
 
-  const handleSave = () => {
-    if (!draft) return;
-    const ok = window.confirm("Are you sure to change?");
-    if (!ok) return;
-    const storedLog = logToStoredLog(draft);
-    updateLog(storedLog);
-    setIsEditOpen(false);
-    setDraft(null);
-  }
-
-
 
   return (
     <div className="p-4 flex flex-col justify-center items-center ">
@@ -119,58 +95,24 @@ export function LogModal({ onClose }: Props) {
 
       {/*******  Edit modal ********/}
       {isEditOpen && draft && (
-        <Modal
+        <CommonModal
           isOpen={isEditOpen}
-          onRequestClose={() => {
+          onClose={() => {
             setIsEditOpen(false);
             setDraft(null);
           }}
-          overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center "
-          className="flex flex-col justify-center items-center bg-(--foreground) w-96 max-w-[80%] max-h-[90%] p-6 rounded-lg overflow-y-auto overflow-x-hidden"
+          overlayClick={false}
         >
-          <ul className="flex flex-col items-start w-full bg-(--inputColor) p-4 border-0">
-
-            {editableFields
-              .map((item) => (
-                <li key={item.label} className="flex justify-center py-1 text-xs md:text-sm ">
-                  <p className=" w-24 md:w-30 ">{item.label.charAt(0).toUpperCase() + item.label.slice(1)}</p>
-                  <input
-                    value={draft[item.key]}
-                    onChange={(e) => {
-                      setDraft({
-                        ...draft, [item.key]:
-                          e.target.value
-                      })
-                    }}
-                    className=" w-24 md:w-30 px-2  bg-amber-300 focus:ring-yellow-500 rounded-md focus:outline-none focus:ring-2"
-                  />
-                </li>
-              ))}
-          </ul>
-
-          <div className="flex gap-10 pt-4">
-            <button
-              id="form"
-              type="button"
-              onClick={() => {
-                const ok = window.confirm("Are you sure to cancel?");
-                if (!ok) return;
-                setDraft(null);
-                setIsEditOpen(false); // ← Modal close
-              }}
-              className="mt-4 py-2 px-4 rounded-xl bg-gray-400 hover:bg-gray-500 text-white"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              className="mt-4 py-2 px-4 border-none rounded-xl bg-lime-700 text-white"
-            >
-              Save
-            </button>
-          </div>
-        </Modal>
+          <EditModal
+            log={log}
+            onCancel={() => {
+            setIsEditOpen(false);
+            setDraft(null);
+            }}
+            setDraft={setDraft}
+            draft={draft}
+          />
+        </CommonModal>
       )}
 
       {/* weather info */}
