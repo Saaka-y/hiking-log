@@ -1,4 +1,5 @@
 //@/components/logModal/LogModal.tsx
+// Refered to https://reactcommunity.org/react-modal/
 import Modal from 'react-modal'
 import { useState } from 'react';
 import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudyHigh, WiCloudy, WiDayRainMix, WiRain, WiRainWind, WiThunderstorm, WiSnowflakeCold, WiFog } from "react-icons/wi";
@@ -7,7 +8,7 @@ import { useLogStore } from '@/stores/logStore'
 import { logToStoredLog, storedLogToLog } from '@/utils/logConverter';
 
 type Props = {
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 // Type-safe weather icon mapping using the Weather union type
@@ -39,7 +40,7 @@ const editableFields: EditableField[] = [
 ];
 
 
-export function LogModal({ onCancel }: Props) {
+export function LogModal({ onClose }: Props) {
   const [isEditOpen, setIsEditOpen] = useState(false); // For Edit UI
   const [draft, setDraft] = useState<Log | null>(null); // Editing state
   const { storedLogs, selectedLogId, deleteLog, updateLog } = useLogStore();
@@ -83,7 +84,7 @@ export function LogModal({ onCancel }: Props) {
     const ok = window.confirm("Are you sure to delete?");
     if (!ok) return;
     deleteLog(selectedLogId);
-    onCancel();
+    onClose();
   }
 
   const handleEdit = () => {
