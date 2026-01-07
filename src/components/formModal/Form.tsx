@@ -96,8 +96,10 @@ export function Form({ onCancel }: Props) {
   }
 
   const handleCancel = () => {
-    const ok = window.confirm("Are you sure to cancel?");
-    if (!ok) return;
+    if(formData.date || formData.mountain || formData.start || formData.goal || formData.breakMin || formData.entry || formData.exit) {
+      const ok = window.confirm("Are you sure to cancel?");
+      if (!ok) return;
+    }
 
     resetForm();
     onCancel(); // ← Modal close
