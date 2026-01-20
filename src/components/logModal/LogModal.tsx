@@ -106,8 +106,8 @@ export function LogModal({ onClose }: Props) {
           <EditModal
             log={log}
             onCancel={() => {
-            setIsEditOpen(false);
-            setDraft(null);
+              setIsEditOpen(false);
+              setDraft(null);
             }}
             setDraft={setDraft}
             draft={draft}
@@ -124,7 +124,7 @@ export function LogModal({ onClose }: Props) {
         <button
           type="button"
           onClick={handleDelete}
-          className="py-2 px-4 border-none rounded-xl bg-yellow-800 text-white"
+          className="py-2 px-4 border-none rounded-xl bg-red-800 text-white"
         >
           Delete
         </button>
